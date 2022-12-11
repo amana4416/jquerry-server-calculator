@@ -34,7 +34,6 @@ function submitCalculation() {
         numberTwo: newNumberTwo,
         operator: operation
     };
-
     //post request to send object over to server
     $.ajax({
         url: '/postCalculation',
@@ -50,16 +49,27 @@ function submitCalculation() {
      getSolutions();
 }
 
-
 //function to get solution back from server
 function getSolutions() {
     $.ajax({
         url: '/getSolutions',
         method: 'get'
     }).then((res) => {
+        //empty out solution when a new calcualtion is made 
+        $('#solution').empty();
+        //display solution on DOM
         $('#solution').append(`
         <h2>Solution: ${res[res.length-1].result} </h2>
-        `)
+        `);
+        //show previous equations on DOM in a list
+        for (let part of res) {
+            $('#previousEquations').append(`
+            <li>
+            ${part.numberOne} ${part.operator} ${part.numberTwo} = ${part.result}
+            </li>
+            `)
+            };
+
         
     });
 }

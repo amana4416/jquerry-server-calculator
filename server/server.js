@@ -39,9 +39,30 @@ function calculateSolution(solutions) {
             return result;
             console.log(result);
         }
-    }
+        //same conditional for each operation
+    } else if (currentCalculation.operator === '-') {
+        currentCalculation.result = subtraction(currentCalculation);
+        function subtraction(currentCalculation) {
+            let result = Number(currentCalculation.numberOne) + Number(currentCalculation.numberTwo);
+            return result;
+            console.log(result);
+        }
+    } else if (currentCalculation.operator === '*') {
+        currentCalculation.result = multiplication(currentCalculation);
+        function multiplication(currentCalculation) {
+            let result = Number(currentCalculation.numberOne) * Number(currentCalculation.numberTwo);
+            return result;
+            console.log(result);
+        }
+    } else if (currentCalculation.operator === '/') {
+        currentCalculation.result = division(currentCalculation);
+        function division(currentCalculation) {
+            let result = Number(currentCalculation.numberOne) / Number(currentCalculation.numberTwo);
+            return result;
+            console.log(result);
+        }
+    } 
 }
-
 
 
 //get route to send solutions back to client

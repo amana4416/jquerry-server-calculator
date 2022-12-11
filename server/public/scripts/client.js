@@ -56,11 +56,15 @@ function getSolutions() {
         method: 'get'
     }).then((res) => {
         //empty out solution when a new calcualtion is made 
+        //that way most recent solution can be displayed
         $('#solution').empty();
         //display solution on DOM
         $('#solution').append(`
         <h2>Solution: ${res[res.length-1].result} </h2>
         `);
+        //empty out previous equations list and create a new one
+        //each time a calculation is made
+        $('#previousEquations').empty();
         //show previous equations on DOM in a list
         for (let part of res) {
             $('#previousEquations').append(`
@@ -69,8 +73,6 @@ function getSolutions() {
             </li>
             `)
             };
-
-        
     });
 }
 

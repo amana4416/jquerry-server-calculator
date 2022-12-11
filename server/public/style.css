@@ -1,3 +1,18 @@
+body {
+    background-color: #7C606B;
+}
+
+
 h1 {
-    color: blue;
+    color: #EDA4BD;
+}
+
+h2,
+h3,
+#previousEquations {
+    color: #EED5C2;
+}
+
+h2{
+    margin-bottom: 30px;
 }

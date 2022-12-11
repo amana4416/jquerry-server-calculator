@@ -1,55 +1,60 @@
 //create server
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const app = express();
 const PORT = 5000;
 app.use(express.static('server/public'));
 //call body-parser so server can read incoming data
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.urlencoded({extended:true}));
 
 //global variables
-let equationString = [];
-let equation;
+let solutions = [];
 
-//post route that will recieve new data
-//will also run calculations here too
-app.post('/submitCalculation', (req, res) => {
-    //store incoming values from browser as a variable
-    equation = req.body;
-    let numOne = Number(equation.numberOne);
-    let numTwo = Number(equation.numberTwo);
-    let operator = equation.operator;
-    //if statement to run addition calculation
-    //will store equation in a string
-    if (operator === "+") {
-        let solution = Number(numOne) + Number(numTwo);
-        equation = `${numOne}${operator}${numTwo} = ${solution}`;
-        equationString.push(equation);
+//post route to recieve input values from client
+app.post('/postCalculation', (req, res) => {
+    console.log('recieved inputs from server')
+    //add incoming object to solutions array
+    solutions.push(req.body);
+    //run incomig object through function 
+    //that will run the calculation
+    calculateSolution(solutions);
+    //lets us know array arrived in /post route
+    //and was added to solutions array
+    res.sendStatus(200);
+})
+
+function calculateSolution(solutions) {
+    //this will grab the most recently added array
+    //in the solutions array
+    let currentCalculation = solutions[solutions.length-1]
+    //conditional statements for each operator
+    //that will evanluate which operator is being used
+    //and send it to a second function 
+    //to actually solve the equation
+    if (currentCalculation.operator === '+') {
+        currentCalculation.result = addition(currentCalculation);
+        //this function will solve the equation
+        function addition(currentCalculation) {
+            let result = Number(currentCalculation.numberOne) + Number(currentCalculation.numberTwo);
+            return result;
+            console.log(result);
+        }
     }
+}
 
-    //response to send back to console on browser
-    res.sendStatus(201);
-}) 
+//this function will solve the equation
+// function addition(currentCalculation) {
+//     let result = Number(currentCalculation.numberOne) + Number(currentCalculation.numberOne);
+//     return result;
+// }
 
-//this get route will send over just the solution
-//to the most recent equation
-app.get('/showSolution', (req, res) => {
-    //send just the solution 
-    res.send(solution);
 
+//get route to send solutions back to client
+app.get('/getSolutions', (req, res) => {
+    console.log('sending solutions array to client');
+    res.send(solutions);
+    console.log(solutions)
 })
-
-//this get route will send over the whole equation
-//so that equation histroy can be displayed on the DOM
-app.get('/showPreviousEquations', (req, res) => {
-    //sending calculations back to browser as a string
-    res.send(equationString);
-    //empty string after it has been sent back in 
-    //preperation for new string/equation
-    equationString = [];
-})
-
-
 
 
 //start server

@@ -3,84 +3,83 @@ $(document).ready(onReady);
 function onReady() {
     console.log('DOM is loaded!');
     $('#submitButton').on('click', submitCalculation);
-    $('#additionOperatorButton').on('click', addition);
+    handleOperatorButtons();
 }
 
 //global variables
-let operator;
+let numberOne = '';
+let numberTwo = '';
+let operation = '';
 
-//when the submit button is clicked
-//function will collect input values
-//and send them to server.js
-//where calculations will occur
-//will be sent to server.js using a /post route
+//mega function to hold click operators for
+//each operator button
+function handleOperatorButtons() {
+$('#additionOperatorButton').on('click', additionOperator)
+$('#subtractionOperatorButton').on('click', subtractionOperator)
+$('#multiplicationOperatorButton').on('click', multiplicationOperator)
+$('#divisionOperatorButton').on('click', divisionOperator)
+}
+
+
+//will grab input values when submit button is clicked
 function submitCalculation() {
     //test to see if button works
     console.log('submit')
     //grab input values
-    let newNumberOne = Number($('#numberOneInput').val());
-    let newNumberTwo = Number($('#numberOneInput').val());
+    let newNumberOne = $('#numberOneInput').val();
+    let newNumberTwo = $('#numberTwoInput').val();
     //make a new object to send to server
     let newCalculation = {
         numberOne: newNumberOne,
         numberTwo: newNumberTwo,
-        operator: operator
-    }
-    //send to server using a POST route
+        operator: operation
+    };
+
+    //post request to send object over to server
     $.ajax({
-        url: '/submitCalculation',
-        method: 'post',
+        url: '/postCalculation',
+        method: 'post', 
         data: newCalculation
-      }).then((res) => {
-        //test to see if server recieved newCalculation object
-        console.log('send calculation to server');
-        //call showAnswer function
-        //so answer to most recent equation can be displayed on DOM
-        showSolution();
-        //call showPreviousEquations function 
-        //so answer history can be sent back to browser
-        showPreviousEquations();
-      })
-      //empty input values after hitting submit
-      $('input').val('');
+    }).then((res) => {
+        //seeing if our input values posted
+        //and were added to the array server side
+        console.log(res);
+    });
+     //call get request after values have been 
+     //sent to server in a post route
+     getSolutions();
 }
 
-function showSolution() {
+
+//function to get solution back from server
+function getSolutions() {
     $.ajax({
-        url: '/showSolution',
+        url: '/getSolutions',
         method: 'get'
     }).then((res) => {
-        console.log('recieved solution from server')
-        //append answer to the DOM
-        $('#currentSolution').append(`
-        <h2>${res}</h2>
-        `);
-
-    })
+        
+        
+    });
 }
 
-
-//sending a req to server, 
-//server will run the equation and save
-//the equation as a string
-//that we can append to a table 
-//to show previous calculations
-function showPreviousEquations() {
-    $.ajax({
-        url: '/showPreviousEquations',
-        method: 'get'
-    }).then((res) => {
-        console.log('recieved equation from server');
-        //append calculation to list
-        $('#previousEquations').append(`
-        <li>${res}</li>
-        `);
-    })
+//each operator will have their own function 
+//so the operator can be stored in the global variable operation
+function additionOperator() {
+    console.log('addition');
+    operation = '+';
 }
 
+function subtractionOperator() {
+    console.log('subtract');
+    operation = '-';
+}
 
-//functions for each operator
-function addition() {
-    let operatorToSend = "+";
-    operator = operatorToSend;
+function multiplicationOperator() {
+    console.log('multiply');
+    operation = '*';
+}
+
+function divisionOperator() {
+    console.log('divide');
+    operation = '/';
 }

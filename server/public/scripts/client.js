@@ -18,6 +18,7 @@ $('#additionOperatorButton').on('click', additionOperator)
 $('#subtractionOperatorButton').on('click', subtractionOperator)
 $('#multiplicationOperatorButton').on('click', multiplicationOperator)
 $('#divisionOperatorButton').on('click', divisionOperator)
+$('#clearButton').on('click', clearCalculator)
 }
 
 
@@ -74,6 +75,13 @@ function getSolutions() {
             `)
             };
     });
+}
+
+//function to clear inputs once
+function clearCalculator(){
+    // console.log('clear!');
+    $('#numberOneInput').val('');
+    $('#numberTwoInput').val('');
 }
 
 //each operator will have their own function 

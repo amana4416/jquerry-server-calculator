@@ -7,8 +7,10 @@ app.use(express.static('server/public'));
 //call body-parser so server can read incoming data
 app.use(bodyParser.urlencoded({extended:true}));
 
+
 //global variables
 let solutions = [];
+
 
 //post route to recieve input values from client
 app.post('/postCalculation', (req, res) => {
@@ -23,6 +25,10 @@ app.post('/postCalculation', (req, res) => {
     res.sendStatus(200);
 })
 
+
+//function will actually solve the calculation
+//and will be called up in the /post route so answer can be 
+//stored in the global variable
 function calculateSolution(solutions) {
     //this will grab the most recently added array
     //in the solutions array
@@ -43,7 +49,7 @@ function calculateSolution(solutions) {
     } else if (currentCalculation.operator === '-') {
         currentCalculation.result = subtraction(currentCalculation);
         function subtraction(currentCalculation) {
-            let result = Number(currentCalculation.numberOne) + Number(currentCalculation.numberTwo);
+            let result = Number(currentCalculation.numberOne) - Number(currentCalculation.numberTwo);
             return result;
             console.log(result);
         }

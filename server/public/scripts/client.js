@@ -105,3 +105,6 @@ function divisionOperator() {
     console.log('divide');
     operation = '/';
 }
+
+
+

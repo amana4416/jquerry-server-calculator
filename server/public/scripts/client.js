@@ -57,7 +57,9 @@ function getSolutions() {
         url: '/getSolutions',
         method: 'get'
     }).then((res) => {
-        
+        $('#solution').append(`
+        <h2>Solution: ${res[res.length-1].result} </h2>
+        `)
         
     });
 }

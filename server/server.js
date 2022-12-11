@@ -42,11 +42,6 @@ function calculateSolution(solutions) {
     }
 }
 
-//this function will solve the equation
-// function addition(currentCalculation) {
-//     let result = Number(currentCalculation.numberOne) + Number(currentCalculation.numberOne);
-//     return result;
-// }
 
 
 //get route to send solutions back to client
